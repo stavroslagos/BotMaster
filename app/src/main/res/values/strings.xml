@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">BotMaster</string>
+    <string name="openfile">Open bot list</string>
+    <string name="savefile">Save bot list</string>
+    <string name="serverstart">Server start</string>
+    <string name="serverstop">Server stop</string>
+    <string name="back">Back</string>
+    <string name="app_name">BotMaster - Aegean Uni</string>
 </resources>

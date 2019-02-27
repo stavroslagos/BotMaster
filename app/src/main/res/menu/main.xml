@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:orderInCategory="1"
+        android:id="@+id/action_startserver"
+        android:title="@string/serverstart"
+        app:showAsAction="collapseActionView"/>
+    <item
+        android:orderInCategory="2"
+        android:id="@+id/action_stopserver"
+        android:title="@string/serverstop"
+        app:showAsAction="collapseActionView"/>
+    <item
+        android:orderInCategory="3"
+        android:id="@+id/action_openfile"
+        android:title="@string/openfile"
+        app:showAsAction="collapseActionView"/>
+    <item
+        android:orderInCategory="4"
+        android:id="@+id/action_savefile"
+        android:title="@string/savefile"
+        app:showAsAction="collapseActionView"/>
+</menu>
