@@ -46,9 +46,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mMainScreen = (TextView) findViewById(R.id.tv_main_screen);
         //while (serverstatus){
-            new receive().execute(serverport);
+        new receive().execute(serverport);
         //    mMainScreen.append(message);
         //}
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // TODO - end server with close() if socket is still started
     }
 
     /*
@@ -86,30 +92,33 @@ public class MainActivity extends AppCompatActivity {
             ServerSocket ss;
             Socket sokket1 = null;
             message = "started";
-            mMainScreen.append(message);
-            //mMainScreen.append("Before loop : "+message+"\n");
+            MainActivity.this.runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    mMainScreen.append("Async Task : "+message+"\n");
+                }
+            });
             try {
                 ss = new ServerSocket(port);
-                ss.accept();
-                //new ServerThreads(ss.accept()).start();
-                // TODO - Saving recruit info after accept
-                InputStreamReader isr = new InputStreamReader(sokket1.getInputStream());
-                BufferedReader br = new BufferedReader(isr);
-                message = br.readLine();
-                br.close();
-                isr.close();
+                while (true) {
+                    new ServerThreads(ss.accept()).start();
+                    // TODO - Saving recruit info after accept
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             return message;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            mMainScreen.append("On Post Execute : \n" + result);
+        protected void onPostExecute(final String result) {
+            //mMainScreen.append("On Post Execute : \n" + result);
             //message = "On Post Execute : Server stopped \n";
             //return message;
-
         }
 
     }
@@ -156,7 +165,15 @@ public class MainActivity extends AppCompatActivity {
                 message = br.readLine();
                 //mMainScreen.append("Message received \n");
                 // Adding new Bot recruit to json file
-                new Log(message);
+                MainActivity.this.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        mMainScreen.append("Server Thread : "+message+"\n");
+                    }
+                });
+                //new Log(message);
                 br.close();
                 isr.close();
                 } catch (IOException e) {
@@ -164,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    /*
     public class Log
     {
         String bot_name;
@@ -203,5 +221,5 @@ public class MainActivity extends AppCompatActivity {
         }
             // https://stackoverflow.com/questions/1625234/how-to-append-text-to-an-existing-file-in-java
     }
-
+*/
 }
