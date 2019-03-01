@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public String message = "not null";
     public boolean serverstatus = true;
     public static int i=0;
-    public String bot_name, bot_info, filecontents;
+    public String bot_name, bot_info, bot_status, filecontents;
 
 
     @Override
@@ -165,8 +165,15 @@ public class MainActivity extends AppCompatActivity {
                 InputStreamReader isr = new InputStreamReader(sokket1.getInputStream());
                 BufferedReader br = new BufferedReader(isr);
                 message = br.readLine();
-                //bot_name = message.split(Pattern.quote("."))[0];
-                //bot_info = message.split(Pattern.quote("."))[1];
+                //
+                // Split string
+                // https://stackoverflow.com/questions/3732790/android-split-string
+                // Check what bots are transmiting
+                //
+                String[] separated = message.split("#");
+                bot_status = separated[0];
+                bot_name = separated[1];
+                bot_info = separated[2];
                 //filecontents = "BotID."+bot_name+"."+"Bot Info."+bot_info;
 
                 //mMainScreen.append("Message received \n");
@@ -175,9 +182,16 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void run() {
-
                         mMainScreen.append(message+"\n");
-
+                        if(!bot_status.isEmpty()){
+                            mMainScreen.append(bot_status+"\n");
+                        }
+                        if(!bot_name.isEmpty()){
+                            mMainScreen.append(bot_name+"\n");
+                        }
+                        if(!bot_info.isEmpty()){
+                            mMainScreen.append(bot_info+"\n");
+                        }
                     }
                 });
                 //new Log(message);
