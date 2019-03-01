@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     public String serverport = "9999";
     public String message = "not null";
     public boolean serverstatus = true;
+    public static int i=0;
+    public String bot_name, bot_info, filecontents;
 
 
     @Override
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             int port = Integer.parseInt(str_port[0]);
             ServerSocket ss;
             Socket sokket1 = null;
-            message = "started";
+            message = "BotMaster server started";
             MainActivity.this.runOnUiThread(new Runnable() {
 
                 @Override
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 while (true) {
                     new ServerThreads(ss.accept()).start();
                     // TODO - Saving recruit info after accept
+                    i+=1;
                 }
 
             } catch (IOException e) {
@@ -154,15 +157,18 @@ public class MainActivity extends AppCompatActivity {
 
     public class ServerThreads extends Thread {
         public Socket sokket1 = null;
-        public OutputStream dos = null;
-
 
         public ServerThreads(Socket sokket) {
             this.sokket1 = sokket;
+
             try {
                 InputStreamReader isr = new InputStreamReader(sokket1.getInputStream());
                 BufferedReader br = new BufferedReader(isr);
                 message = br.readLine();
+                //bot_name = message.split(Pattern.quote("."))[0];
+                //bot_info = message.split(Pattern.quote("."))[1];
+                //filecontents = "BotID."+bot_name+"."+"Bot Info."+bot_info;
+
                 //mMainScreen.append("Message received \n");
                 // Adding new Bot recruit to json file
                 MainActivity.this.runOnUiThread(new Runnable() {
@@ -170,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        mMainScreen.append("Server Thread : "+message+"\n");
+                        mMainScreen.append(message+"\n");
+
                     }
                 });
                 //new Log(message);
@@ -181,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    /*
     public class Log
     {
         String bot_name;
@@ -221,5 +227,4 @@ public class MainActivity extends AppCompatActivity {
         }
             // https://stackoverflow.com/questions/1625234/how-to-append-text-to-an-existing-file-in-java
     }
-*/
 }
