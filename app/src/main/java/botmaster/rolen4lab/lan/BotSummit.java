@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,15 +25,47 @@ import java.util.Calendar;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import static botmaster.rolen4lab.lan.MainActivity.bot_list;
+import static botmaster.rolen4lab.lan.MainActivity.bot_list_iterator;
+import static botmaster.rolen4lab.lan.MainActivity.i;
+
 public class BotSummit extends AppCompatActivity {
     TextView mSecondaryScreen;
+    LinearLayout linearLayout;
+    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot_summit);
-        mSecondaryScreen = (TextView) findViewById(R.id.tv_secondary_screen);
+        //params.setMargins(8,0,8,0);
+        //mSecondaryScreen = (TextView) findViewById(R.id.tv_secondary_screen);
+        linearLayout = findViewById(R.id.ll_activity_bot_summit);
 
+        //Adding a scrollview
+        ScrollView scrollview = new ScrollView(this);
+        scrollview.setLayoutParams(params);
+
+        // Adding 12 textviews
+        for (String tv_name : bot_list) {
+            TextView textView = new TextView(this);
+            textView.setText(tv_name);
+            //textView.setLayoutParams(params);
+            //textView.setPadding(8,8,8,8);
+            CheckBox checkbox = new CheckBox((this));
+            //checkbox.setLayoutParams(params);
+            //checkbox.setPadding(8,8,8,8);
+            linearLayout.addView(textView);
+            linearLayout.addView(checkbox);
+        }
+        linearLayout.addView(scrollview);
+        /*
+        mSecondaryScreen.setText(bot_list.size()+" ");
+        for (String tv_name:bot_list ){
+            mSecondaryScreen.append(tv_name);
+        }
+        */
     }
 
     @Override
@@ -81,7 +116,7 @@ public class BotSummit extends AppCompatActivity {
             try {
                 sc = new Scanner(file);
                 while (sc.hasNextLine()){
-                    mSecondaryScreen.setText(sc.nextLine());
+                    //mSecondaryScreen.setText(sc.nextLine());
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

@@ -30,7 +30,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,17 +43,26 @@ public class MainActivity extends AppCompatActivity {
     public boolean serverstatus = true;
     public static int i=0;
     public String bot_name, bot_info, bot_status, filecontents;
-
+    public static List<String> bot_list = new ArrayList<String>();
+    public static Iterator<String> bot_list_iterator = bot_list.iterator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Adding dummy bots to bot list
+
+        bot_list.add("Bot1");
+        bot_list.add("Bot2");
+        bot_list.add("Bot3");
+        bot_list.add("Bot4");
+
         setContentView(R.layout.activity_main);
         mMainScreen = (TextView) findViewById(R.id.tv_main_screen);
-        //while (serverstatus){
+        mMainScreen.setText(bot_list.size()+" ");
+
+        // server started here to receive bots transmitions
         new receive().execute(serverport);
-        //    mMainScreen.append(message);
-        //}
     }
 
     @Override
@@ -106,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 ss = new ServerSocket(port);
                 while (true) {
                     new ServerThreads(ss.accept()).start();
-                    // TODO - Saving recruit info after accept
+                    // TODO - Saving recruit info after accept (Option 1 : using List<String>
                     i+=1;
                 }
 
@@ -174,6 +186,10 @@ public class MainActivity extends AppCompatActivity {
                 bot_status = separated[0];
                 bot_name = separated[1];
                 bot_info = separated[2];
+
+                // TODO - Adding bot recruiters first attempt to a bot list
+                bot_list.add(message);
+
                 //filecontents = "BotID."+bot_name+"."+"Bot Info."+bot_info;
 
                 //mMainScreen.append("Message received \n");
@@ -188,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(!bot_name.isEmpty()){
                             mMainScreen.append(bot_name+"\n");
+                            // TODO - Add new bot recruit to bot_table
                         }
                         if(!bot_info.isEmpty()){
                             mMainScreen.append(bot_info+"\n");
